@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Typen-Meister</title>
+    
+    <!-- iOS Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Typen-Meister">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2D2D2D">
+    
+    <!-- App Icons (optional - falls du Icons hast) -->
+    <!-- <link rel="apple-touch-icon" href="images/icon-180.png"> -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="images/icon-180.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png"> -->
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Startbildschirm -->
+    <div id="start-screen" class="screen active">
+        <div class="container start-container">
+            <div class="logo-area">
+                <img src="images/Pokemon offical logo.png" alt="Pokémon Logo" class="pokemon-logo">
+                <img src="images/Type Master Logo.png" alt="Type Master Logo" class="type-master-logo">
+            </div>
+            <p class="welcome-text">Finde alle sehr effektiven Typen!</p>
+            <div class="button-group">
+                <button id="start-btn" class="btn btn-primary btn-large">Los geht's!</button>
+                <button id="hall-of-fame-btn" class="btn btn-secondary">Ruhmeshalle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schwierigkeitsgrad-Bildschirm -->
+    <div id="difficulty-screen" class="screen">
+        <div class="container">
+            <h1 class="screen-title">Wähle deine Schwierigkeit</h1>
+            <div class="tiles-grid">
+                <div class="tile difficulty-tile" data-difficulty="easy">
+                    <div class="tile-header">
+                        <h3>Einfach</h3>
+                        <div class="tile-icon">
+                            <img src="images/Pokeball Icon.png" alt="Pokeball" class="ball-icon">
+                        </div>
+                    </div>
+                    <div class="tile-content">
+                        <p>Zeigt die Typen des Pokémon und die Anzahl der gesuchten Schwächen an.</p>
+                        <p class="tile-detail">• Leichte Punktabzüge<br>• Hilfestellungen aktiv</p>
+                    </div>
+                </div>
+                
+                <div class="tile difficulty-tile" data-difficulty="normal">
+                    <div class="tile-header">
+                        <h3>Normal</h3>
+                        <div class="tile-icon">
+                            <img src="images/Superball Icon.png" alt="Superball" class="ball-icon">
+                        </div>
+                    </div>
+                    <div class="tile-content">
+                        <p>Standard-Quiz ohne Hilfestellungen.</p>
+                        <p class="tile-detail">• Normale Punktabzüge<br>• Ausgewogene Herausforderung</p>
+                    </div>
+                </div>
+                
+                <div class="tile difficulty-tile" data-difficulty="hard">
+                    <div class="tile-header">
+                        <h3>Schwer</h3>
+                        <div class="tile-icon">
+                            <img src="images/Hyperball Icon.png" alt="Hyperball" class="ball-icon">
+                        </div>
+                    </div>
+                    <div class="tile-content">
+                        <p>Erhöhte Punktabzüge für falsche Antworten.</p>
+                        <p class="tile-detail">• Stärkere Punktabzüge<br>• Für Experten</p>
+                    </div>
+                </div>
+                
+                <div class="tile difficulty-tile" data-difficulty="hardcore">
+                    <div class="tile-header">
+                        <h3>Hardcore</h3>
+                        <div class="tile-icon">
+                            <img src="images/Meisterball Icon.png" alt="Meisterball" class="ball-icon">
+                        </div>
+                    </div>
+                    <div class="tile-content">
+                        <p>Strenge Punktabzüge - nur für wahre Meister!</p>
+                        <p class="tile-detail">• Sehr strenge Punktabzüge<br>• Maximale Herausforderung</p>
+                    </div>
+                </div>
+            </div>
+            <button id="back-from-difficulty" class="btn btn-secondary btn-back">Zurück</button>
+        </div>
+    </div>
+
+    <!-- Fragenanzahl-Bildschirm -->
+    <div id="question-count-screen" class="screen">
+        <div class="container">
+            <h1 class="screen-title">Wie viele Fragen?</h1>
+            <div class="question-count-options">
+                <button class="count-btn" data-count="5">5 Runden</button>
+                <button class="count-btn" data-count="10">10 Runden</button>
+                <button class="count-btn" data-count="15">15 Runden</button>
+                <button class="count-btn" data-count="20">20 Runden</button>
+                <button class="count-btn" data-count="50">50 Runden</button>
+            </div>
+            <button id="back-from-count" class="btn btn-secondary btn-back">Zurück</button>
+        </div>
+    </div>
+
+    <!-- Generationen-Bildschirm -->
+    <div id="generation-screen" class="screen">
+        <div class="container">
+            <h1 class="screen-title">Wähle Generationen</h1>
+            <p class="screen-subtitle">Mehrfachauswahl möglich</p>
+            
+            <div class="tiles-grid generation-grid">
+                <!-- Wird dynamisch generiert -->
+            </div>
+            
+            <div class="special-forms">
+                <div class="checkbox-tile">
+                    <label>
+                        <input type="checkbox" id="mega-evolutions">
+                        <span class="checkbox-label">Mega-Entwicklungen</span>
+                    </label>
+                </div>
+                <div class="checkbox-tile">
+                    <label>
+                        <input type="checkbox" id="regional-forms">
+                        <span class="checkbox-label">Regionalformen</span>
+                    </label>
+                </div>
+            </div>
+            
+            <button id="start-game-btn" class="btn btn-primary btn-large" disabled>Spiel starten</button>
+            <button id="back-from-generation" class="btn btn-secondary btn-back">Zurück</button>
+        </div>
+    </div>
+
+    <!-- Spiel-Bildschirm -->
+    <div id="game-screen" class="screen">
+        <div class="container">
+            <!-- Rote Header-Leiste -->
+            <div class="game-header-bar">
+                <div class="header-left">
+                    <button id="pokemon-center-btn" class="home-btn" title="Zum Start zurückkehren">
+                        <img src="images/Pokemoncenter.png" alt="Zum Start zurückkehren" class="home-btn-icon">
+                    </button>
+                    <div class="progress-text">
+                        <span id="current-question">1</span> / <span id="total-questions">10</span>
+                    </div>
+                    <div class="difficulty-badge" id="difficulty-badge">NORMAL</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="score-label">SCORE</div>
+                    <div class="score-value" id="current-score">0</div>
+                </div>
+            </div>
+            
+            <div class="game-content">
+                <!-- Pokemon Display Card -->
+                <div class="pokemon-display-card">
+                    <h2 id="pokemon-name" class="pokemon-name">Lade...</h2>
+                    <div class="pokemon-image-container">
+                        <img id="pokemon-image" src="" alt="Pokémon">
+                    </div>
+                    <div id="hint-container" class="hint-container" style="display: none;">
+                        <p id="hint-text"></p>
+                    </div>
+                    <div class="pokemon-stats-bar">
+                        <div class="stat-item">
+                            <span class="stat-label">ZIEL</span>
+                            <span class="stat-value" id="target-count">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">WAHL</span>
+                            <span class="stat-value" id="choice-count">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Type Selection Card -->
+                <div class="types-selection-card">
+                    <div class="card-header">
+                        <h3 class="card-title">EFFEKTIVE TYPEN?</h3>
+                        <span class="card-subtitle">MULTI-CHOICE</span>
+                    </div>
+                    <div class="types-grid" id="types-grid">
+                        <!-- Wird dynamisch generiert -->
+                    </div>
+                </div>
+                
+                <!-- Confirmation Button -->
+                <button id="confirm-btn" class="confirm-btn" disabled>BESTÄTIGEN</button>
+                <button id="next-btn" class="confirm-btn" style="display: none;">WEITER</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ergebnis-Bildschirm -->
+    <div id="result-screen" class="screen">
+        <div class="container">
+            <h1 class="title">Ergebnis</h1>
+            
+            <div id="result-content">
+                <!-- Wird dynamisch generiert -->
+            </div>
+            
+            <div class="button-group">
+                <button id="play-again-btn" class="btn btn-primary">Nochmal spielen</button>
+                <button id="hall-of-fame-btn-2" class="btn btn-secondary">Ruhmeshalle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ruhmeshalle -->
+    <div id="hall-of-fame-screen" class="screen">
+        <div class="container">
+            <h1 class="title">Ruhmeshalle</h1>
+            
+            <div id="hall-of-fame-content">
+                <!-- Wird dynamisch generiert -->
+            </div>
+            
+            <div class="button-group">
+                <button id="back-to-start-btn" class="btn btn-primary">Zurück zum Start</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
