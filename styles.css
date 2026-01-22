@@ -1156,34 +1156,4 @@ body {
     min-height: 0;
 }
 
-/* Mobile-first: Alle Styles sind bereits für Mobile optimiert */
-/* Desktop-Anpassungen (falls nötig) */
-@media (min-width: 769px) {
-    .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 1.5rem;
-        border-radius: 16px;
-    }
-    
-    #game-screen .container {
-        max-width: 100%;
-        border-radius: 0;
-    }
-    
-    .tiles-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .generation-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .types-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .question-count-options {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
+/* Mobile-first: Alle Styles sind für Mobile optimiert */
