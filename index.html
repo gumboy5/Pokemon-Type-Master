@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Pokémon Typen-Meister</title>
     
     <!-- iOS Web App Meta Tags -->
@@ -27,7 +27,6 @@
                 <img src="images/Pokemon offical logo.png" alt="Pokémon Logo" class="pokemon-logo">
                 <img src="images/Type Master Logo.png" alt="Type Master Logo" class="type-master-logo">
             </div>
-            <p class="welcome-text">Finde alle sehr effektiven Typen!</p>
             <div class="button-group">
                 <button id="start-btn" class="btn btn-primary btn-large">Los geht's!</button>
                 <button id="hall-of-fame-btn" class="btn btn-secondary">Ruhmeshalle</button>
@@ -167,9 +166,13 @@
             <div class="game-content">
                 <!-- Pokemon Display Card -->
                 <div class="pokemon-display-card">
-                    <h2 id="pokemon-name" class="pokemon-name">Lade...</h2>
                     <div class="pokemon-image-container">
                         <img id="pokemon-image" src="" alt="Pokémon">
+                    </div>
+                    <h2 id="pokemon-name" class="pokemon-name">Lade...</h2>
+                    <div id="pokemon-number" class="pokemon-number" style="display: none;">#0000</div>
+                    <div id="pokemon-types-display" class="pokemon-types-display" style="display: none;">
+                        <!-- Wird dynamisch generiert -->
                     </div>
                     <div id="hint-container" class="hint-container" style="display: none;">
                         <p id="hint-text"></p>

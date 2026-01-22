@@ -298,17 +298,46 @@ async function loadPokemonList() {
         // Filtere Mega-Entwicklungen und Regionalformen falls nötig
         // Für jetzt nehmen wir alle Pokémon, die API-Filterung wäre komplexer
         const shuffled = pokemonIds.sort(() => Math.random() - 0.5);
-        const selectedIds = shuffled.slice(0, gameState.questionCount);
         
-        // Lade Pokémon-Daten
-        for (const id of selectedIds) {
-            try {
-                const pokemon = await fetchPokemonData(id);
-                if (pokemon) {
-                    gameState.pokemonList.push(pokemon);
+        // Im Einfach-Modus: Nur Pokémon mit einem Typ laden
+        let selectedIds = [];
+        let attempts = 0;
+        const maxAttempts = shuffled.length;
+        
+        if (gameState.difficulty === 'easy') {
+            // Lade Pokémon und filtere nach Einzeltypen
+            for (const id of shuffled) {
+                if (gameState.pokemonList.length >= gameState.questionCount) {
+                    break;
                 }
-            } catch (error) {
-                console.error(`Fehler beim Laden von Pokémon ${id}:`, error);
+                if (attempts >= maxAttempts) {
+                    break;
+                }
+                attempts++;
+                
+                try {
+                    const pokemon = await fetchPokemonData(id);
+                    if (pokemon && pokemon.types.length === 1) {
+                        gameState.pokemonList.push(pokemon);
+                    }
+                } catch (error) {
+                    console.error(`Fehler beim Laden von Pokémon ${id}:`, error);
+                }
+            }
+        } else {
+            // In anderen Modi: Normale Logik
+            selectedIds = shuffled.slice(0, gameState.questionCount);
+            
+            // Lade Pokémon-Daten
+            for (const id of selectedIds) {
+                try {
+                    const pokemon = await fetchPokemonData(id);
+                    if (pokemon) {
+                        gameState.pokemonList.push(pokemon);
+                    }
+                } catch (error) {
+                    console.error(`Fehler beim Laden von Pokémon ${id}:`, error);
+                }
             }
         }
     } catch (error) {
@@ -370,6 +399,37 @@ function nextQuestion() {
     document.getElementById('pokemon-image').src = gameState.currentPokemon.imageUrl;
     document.getElementById('pokemon-image').alt = gameState.currentPokemon.name;
     
+    // Zeige Pokémon-Nummer (immer)
+    const pokemonNumberEl = document.getElementById('pokemon-number');
+    if (pokemonNumberEl) {
+        pokemonNumberEl.textContent = `#${String(gameState.currentPokemon.id).padStart(4, '0')}`;
+        pokemonNumberEl.style.display = 'block';
+    }
+    
+    // Zeige Typen-Tags im Einfach- und Normal-Modus (sofort)
+    const typesDisplayEl = document.getElementById('pokemon-types-display');
+    const hintContainer = document.getElementById('hint-container');
+    
+    if (gameState.difficulty === 'easy') {
+        // Zeige Typen-Tags sofort im Einfach-Modus
+        displayPokemonTypes();
+        
+        // Zeige Hinweis mit Anzahl
+        hintContainer.style.display = 'block';
+        document.getElementById('hint-text').textContent = 
+            `Anzahl sehr effektiver Typen: ${gameState.correctAnswers.length}`;
+    } else if (gameState.difficulty === 'normal') {
+        // Zeige Typen-Tags sofort im Normal-Modus
+        displayPokemonTypes();
+        hintContainer.style.display = 'none';
+    } else {
+        // Verstecke Typen-Tags in anderen Modi (werden nach Bestätigung angezeigt)
+        if (typesDisplayEl) {
+            typesDisplayEl.style.display = 'none';
+        }
+        hintContainer.style.display = 'none';
+    }
+    
     // Update Stats
     const targetCountEl = document.getElementById('target-count');
     if (targetCountEl) {
@@ -384,17 +444,6 @@ function nextQuestion() {
         btn.classList.remove('selected', 'correct', 'incorrect', 'missed');
         btn.disabled = false;
     });
-    
-    // Zeige Hinweis bei Einfach-Modus
-    const hintContainer = document.getElementById('hint-container');
-    if (gameState.difficulty === 'easy') {
-        hintContainer.style.display = 'block';
-        const typeNames = gameState.currentPokemon.types.map(t => getTypeNameGerman(t)).join(' & ');
-        document.getElementById('hint-text').textContent = 
-            `Typen: ${typeNames} | Anzahl sehr effektiver Typen: ${gameState.correctAnswers.length}`;
-    } else {
-        hintContainer.style.display = 'none';
-    }
     
     document.getElementById('confirm-btn').style.display = 'block';
     document.getElementById('confirm-btn').disabled = true;
@@ -445,6 +494,21 @@ function calculateEffectiveTypes(defenderTypes) {
     return effectiveTypes;
 }
 
+function displayPokemonTypes() {
+    const typesDisplayEl = document.getElementById('pokemon-types-display');
+    if (typesDisplayEl && gameState.currentPokemon) {
+        typesDisplayEl.innerHTML = '';
+        typesDisplayEl.style.display = 'flex';
+        
+        gameState.currentPokemon.types.forEach(type => {
+            const tag = document.createElement('span');
+            tag.className = `pokemon-type-tag type-${type}`;
+            tag.textContent = getTypeNameGerman(type);
+            typesDisplayEl.appendChild(tag);
+        });
+    }
+}
+
 function confirmAnswer() {
     const selected = gameState.selectedTypes;
     const correct = gameState.correctAnswers;
@@ -484,6 +548,11 @@ function confirmAnswer() {
         correct: [...correct],
         points: points
     });
+    
+    // Zeige Typen-Tags nach Bestätigung (nur in Schwer und Hardcore)
+    if (gameState.difficulty === 'hard' || gameState.difficulty === 'hardcore') {
+        displayPokemonTypes();
+    }
     
     // Zeige Weiter-Button
     document.getElementById('confirm-btn').style.display = 'none';
